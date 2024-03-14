@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+   stages {
+        stage('Build') {
+            steps {
+                echo "Retrieving source code from GitHub"
+                echo "Compiling the code and creating artifacts."
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo "Executing unit tests began and finished"
+                echo "Execution of integration tests commenced and concluded"
+            }
+            post {
+                success {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Unit and Integration Tests Success',
+                        body: 'The unit and integration tests have passed successfully --- Congratulations.'
+                }
+                failure {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Unit and Integration Tests Failed',
+                        body: 'The unit and integration tests have not succeeded --- Try again.'
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo "Initiating and completing code analysis"
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo "Executing security scan initiated and finalized"
+            }
+            post {
+                success {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Security Scan Success',
+                        body: 'The Security Scan have passed successfully'
+                }
+                failure {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Security Scan Failed',
+                        body: 'The Security Scan have not succeeded'
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo "Initiating and completing deployment to staging"
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Running Integration Tests on Staging started and completed"
+            }
+            post {
+                success {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Integration Tests on Staging Success',
+                        body: 'The Integration Tests on Staging have passed successfully.'
+                }
+                failure {
+                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
+                        subject: 'Integration Tests on Staging Failed',
+                        body: 'The Integration Tests on Staging have not succeeded.'
+                }
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo "Running Integration Tests on Staging started and completed"
+            }
+        }
+    }
+}
