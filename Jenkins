@@ -1,77 +1,64 @@
 pipeline {
     agent any
-   stages {
-        stage('Build') {
+
+    stages {
+        
+        stage('Stage 1: Build') {
             steps {
-                echo "Retrieving source code from GitHub"
-                echo "Compiling the code and creating artifacts."
+                git branch: 'main', changelog: false, poll: false,  url: 'https://github.com/khushivohra/jenkins_6.2P.git'
+                echo 'Stage 1: Build - Fetching the code from the repository, installing dependencies, and building the application using tools such as Maven,Webpack, or Vite.'
             }
         }
-        stage('Unit and Integration Tests') {
+
+        stage('Stage 2: Unit and Integration Tests') {
             steps {
-                echo "Executing unit tests began and finished"
-                echo "Execution of integration tests commenced and concluded"
+                echo 'Stage 2: Unit and Integration Tests - Executing tests using tools like JUnit or NUnit.'
             }
             post {
                 success {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Unit and Integration Tests Success',
-                        body: 'The unit and integration tests have passed successfully --- Congratulations.'
+                    emailext attachLog: true, body: "Stage 2: Unit and Integration Tests passed successfully.", subject: "Pipeline Notification: Stage 2 Passed", to: "khushivohra033@gmail.com"
                 }
                 failure {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Unit and Integration Tests Failed',
-                        body: 'The unit and integration tests have not succeeded --- Try again.'
+                    emailext attachLog: true, body: "Stage 2: Unit and Integration Tests failed. Please check the logs for details.", subject: "Pipeline Notification: Stage 2 Failed", to: "khushivohra033@gmail.com"
                 }
             }
         }
-        stage('Code Analysis') {
+
+        stage('Stage 3: Code Analysis') {
             steps {
-                echo "Initiating and completing code analysis"
+                echo 'Stage 3: Code Analysis - Integrate code analysis tools like SonarQube to ensure the React code meets industry standards and best practices.'
             }
         }
-        stage('Security Scan') {
+
+        stage('Stage 4: Security Scan') {
             steps {
-                echo "Executing security scan initiated and finalized"
+                echo 'Stage 4: Security Scan - Perform a security scan on the React application using tools like OWASP or other scanners to identify potential vulnerabilities.'
             }
             post {
                 success {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Security Scan Success',
-                        body: 'The Security Scan have passed successfully'
+                    emailext attachLog: true, body: "Stage 4: Security Scan passed successfully.", subject: "Pipeline Notification: Stage 4 Passed", to: "khushivohra033@gmail.com"
                 }
                 failure {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Security Scan Failed',
-                        body: 'The Security Scan have not succeeded'
+                    emailext attachLog: true, body: "Stage 4: Security Scan failed. Please check the logs for details.", subject: "Pipeline Notification: Stage 4 Failed", to: "khushivohra033@gmail.com"
                 }
             }
         }
-        stage('Deploy to Staging') {
+
+        stage('Stage 5: Deploy to Staging') {
             steps {
-                echo "Initiating and completing deployment to staging"
+                echo 'Stage 5: Deploy to Staging - Deploy the React application to a staging environment (e.g., AWS S3) for testing and preview.'
             }
         }
-        stage('Integration Tests on Staging') {
+
+        stage('Stage 6: Integration Tests on Staging') {
             steps {
-                echo "Running Integration Tests on Staging started and completed"
-            }
-            post {
-                success {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Integration Tests on Staging Success',
-                        body: 'The Integration Tests on Staging have passed successfully.'
-                }
-                failure {
-                    mail to: 'khushivohra4875.be22@chitkara.edu.in',
-                        subject: 'Integration Tests on Staging Failed',
-                        body: 'The Integration Tests on Staging have not succeeded.'
-                }
+                echo 'Stage 6: Integration Tests on Staging - Run integration tests on the staged React application using tools like Cypress or Selenium to ensure it functions as expected in a production-like environment.'
             }
         }
-        stage('Deploy to Production') {
+
+        stage('Stage 7: Deploy to Production') {
             steps {
-                echo "Running Integration Tests on Staging started and completed"
+                echo 'Stage 7: Deploy to Production - Deploy the React application to the production environment (e.g., AWS S3, Netlify, or a web server).'
             }
         }
     }
